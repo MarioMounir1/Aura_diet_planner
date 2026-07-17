@@ -1,0 +1,100 @@
+// ============================================================
+//  prisma/schema.prisma
+//  Aura Diet Planner — PostgreSQL relational schema
+//  Volcanic-Nutrition-Engine data layer
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── User physical profile ──────────────────────────────────────────────────
+model UserProfile {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  heightCm Float
+  weightKg Float
+  focus    String // e.g. "High-performance training, powerbuilding recovery"
+
+  plans DietPlan[]
+
+  @@map("user_profiles")
+}
+
+// ── Top-level diet plan ────────────────────────────────────────────────────
+model DietPlan {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String?
+  user   UserProfile? @relation(fields: [userId], references: [id])
+
+  name          String
+  type          PlanType
+  targetCalories Int
+  targetProtein  Int
+  targetCarbs    Int
+  targetFats     Int
+
+  meals Meal[]
+
+  @@map("diet_plans")
+}
+
+// ── Individual meal within a plan ─────────────────────────────────────────
+model Meal {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  planId String
+  plan   DietPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  order          Int
+  name           String
+  scheduledTime  String
+  tacticalIntent String   @db.Text
+
+  totalCalories Int
+  totalProtein  Int
+  totalCarbs    Int
+  totalFats     Int
+
+  ingredients Ingredient[]
+
+  @@map("meals")
+}
+
+// ── Individual ingredient within a meal ───────────────────────────────────
+model Ingredient {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  mealId String
+  meal   Meal   @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  name        String
+  weightGrams Int
+  protein     Int
+  carbs       Int
+  fats        Int
+  calories    Int
+
+  @@map("ingredients")
+}
+
+// ── Enums ─────────────────────────────────────────────────────────────────
+enum PlanType {
+  KETO
+  CARNIVORE
+  HIGH_PROTEIN_CUT
+  BULK
+  CUSTOM
+}
