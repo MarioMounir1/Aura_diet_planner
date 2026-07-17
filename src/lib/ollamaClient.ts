@@ -5,11 +5,11 @@
 //  and parses the raw JSON diet plan response.
 // ============================================================
 
-import Ollama from "ollama";
+import { Ollama } from "ollama";
 import { DietPlan, UserProfile } from "../types/index";
 
 const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL ?? "http://localhost:11434";
-const OLLAMA_MODEL    = process.env.OLLAMA_MODEL    ?? "llama3";
+const OLLAMA_MODEL    = process.env.OLLAMA_MODEL    ?? "llava";
 
 // ── System prompt injected into every inference call ─────────────────────
 function buildSystemPrompt(profile: UserProfile): string {
@@ -73,7 +73,7 @@ export async function generateDietPlan(
   userInput: string,
   profile: UserProfile
 ): Promise<DietPlan> {
-  const ollama = new Ollama.Ollama({ host: OLLAMA_BASE_URL });
+  const ollama = new Ollama({ host: OLLAMA_BASE_URL });
 
   const response = await ollama.chat({
     model: OLLAMA_MODEL,
