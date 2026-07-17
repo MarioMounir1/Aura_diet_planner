@@ -6,13 +6,9 @@
 
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-import planRouter from "./routes/plan.js";
-import { ErrorResponse } from "./types/index.js";
+import planRouter from "./routes/plan";
+import { ErrorResponse } from "./types/index";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
 
 export function createApp(): Application {
   const app = express();
@@ -29,10 +25,6 @@ export function createApp(): Application {
   // ── Body parsing ────────────────────────────────────────────────────
   app.use(express.json({ limit: "2mb" }));
 
-  // ── Static frontend ─────────────────────────────────────────────────
-  // Serves the HTML/CSS/JS frontend from the /frontend folder
-  app.use(express.static(path.join(__dirname, "..", "frontend")));
-
   // ── API routes ──────────────────────────────────────────────────────
   app.use("/api/plans", planRouter);
 
@@ -44,11 +36,6 @@ export function createApp(): Application {
       version: "1.0.0",
       timestamp: new Date().toISOString(),
     });
-  });
-
-  // ── SPA fallback — serve index.html for any unmatched GET ───────────
-  app.get("*", (_req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
   });
 
   // ── Global error handler ────────────────────────────────────────────

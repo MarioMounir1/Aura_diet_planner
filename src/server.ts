@@ -5,8 +5,8 @@
 // ============================================================
 
 import "dotenv/config";
-import { createApp } from "./app.js";
-import prisma from "./lib/prismaClient.js";
+import { createApp } from "./app";
+import prisma from "./lib/prismaClient";
 
 const PORT = parseInt(process.env.PORT ?? "3000", 10);
 

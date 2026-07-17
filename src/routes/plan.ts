@@ -12,8 +12,8 @@ import {
   getAllPlans,
   getPlanById,
   deletePlan,
-} from "../services/nutritionEngine.js";
-import { ErrorCode, GeneratePlanRequest } from "../types/index.js";
+} from "../services/nutritionEngine";
+import { ErrorCode, GeneratePlanRequest } from "../types/index";
 
 const router = Router();
 

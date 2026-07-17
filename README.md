@@ -11,7 +11,7 @@
 | Backend    | Node.js · Express · TypeScript    |
 | AI Engine  | Ollama (local LLM)                |
 | Database   | PostgreSQL · Prisma ORM           |
-| Frontend   | Vanilla HTML · CSS · JavaScript   |
+| Mobile App | Flutter · Dart (Android & iOS)    |
 
 ---
 
@@ -20,12 +20,13 @@
 - [Node.js](https://nodejs.org/) v18+
 - [PostgreSQL](https://www.postgresql.org/) v14+
 - [Ollama](https://ollama.com/) installed and running locally
+- [Flutter](https://flutter.dev/) v3.10+ (with Dart 3+)
 
 ---
 
 ## Quick Start
 
-### 1. Clone & install dependencies
+### 1. Install backend dependencies
 
 ```bash
 cd d:\Aura_diet_planner
@@ -50,29 +51,45 @@ Edit `.env` with your values:
 
 ```env
 PORT=3000
-DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/aura_diet_planner"
+DATABASE_URL="postgresql://postgres:PASSWORD@localhost:PORT/aura_diet_planner"
 OLLAMA_BASE_URL="http://localhost:11434"
 OLLAMA_MODEL="llama3"
-ALLOWED_ORIGIN="http://localhost:5500"
 ```
 
 ### 4. Set up the database
 
 ```bash
-# Create the database first in psql:
+# Create the DB first in pgAdmin or psql:
 # CREATE DATABASE aura_diet_planner;
 
 npm run prisma:generate
 npm run prisma:migrate
 ```
 
-### 5. Run the development server
+### 5. Start the backend server
 
 ```bash
 npm run dev
 ```
 
-Open your browser at → **http://localhost:3000**
+Server runs at → **http://localhost:3000**
+
+---
+
+### 6. Run the Flutter mobile app
+
+```bash
+cd mobile
+flutter pub get
+flutter run
+```
+
+> **On physical device?** Open the **Settings tab** in the app and set your machine's LAN IP:
+> `http://192.168.x.x:3000`
+>
+> **Android emulator?** Use `http://10.0.2.2:3000` (default — already set)
+>
+> **iOS simulator?** Use `http://localhost:3000`
 
 ---
 
@@ -107,24 +124,44 @@ Open your browser at → **http://localhost:3000**
 
 ```
 aura-diet-planner/
+│
 ├── prisma/
-│   └── schema.prisma          # PostgreSQL schema (UserProfile → DietPlan → Meal → Ingredient)
-├── src/
-│   ├── types/
-│   │   └── index.ts           # Shared TypeScript DTOs and domain models
+│   └── schema.prisma              # PostgreSQL schema
+│
+├── src/                           # Express backend (TypeScript)
+│   ├── types/index.ts             # Shared DTOs and domain models
 │   ├── lib/
-│   │   ├── ollamaClient.ts    # Ollama inference + math integrity validator
-│   │   └── prismaClient.ts    # Singleton Prisma client
+│   │   ├── ollamaClient.ts        # Ollama inference + math integrity validator
+│   │   └── prismaClient.ts        # Singleton Prisma client
 │   ├── services/
-│   │   └── nutritionEngine.ts # Core business logic (generate, save, fetch, delete)
+│   │   └── nutritionEngine.ts     # Core business logic
 │   ├── routes/
-│   │   └── plan.ts            # Express API router
-│   ├── app.ts                 # Express app factory
-│   └── server.ts              # HTTP server entry point
-├── frontend/
-│   ├── index.html             # UI shell
-│   ├── style.css              # Dark glassmorphism design system
-│   └── app.js                 # Frontend logic
+│   │   └── plan.ts                # Express API router
+│   ├── app.ts                     # Express app factory
+│   └── server.ts                  # HTTP server entry point
+│
+├── mobile/                        # Flutter mobile app (Dart)
+│   └── lib/
+│       ├── main.dart              # App entry point
+│       ├── theme/
+│       │   └── app_theme.dart     # Dark design system
+│       ├── models/
+│       │   ├── diet_plan.dart     # DietPlan model
+│       │   ├── meal.dart          # Meal model
+│       │   └── ingredient.dart    # Ingredient model
+│       ├── services/
+│       │   └── api_service.dart   # HTTP client to backend
+│       ├── widgets/
+│       │   ├── macro_chip.dart    # Color-coded macro chips
+│       │   ├── meal_card.dart     # Expandable meal card
+│       │   └── ingredient_row.dart# Ingredient table row
+│       └── screens/
+│           ├── home_screen.dart        # Nav shell + engine status
+│           ├── generate_screen.dart    # AI plan generator
+│           ├── plan_detail_screen.dart # Full plan view
+│           ├── saved_plans_screen.dart # Saved plans list
+│           └── settings_screen.dart    # API URL config
+│
 ├── .env.example
 ├── package.json
 └── tsconfig.json

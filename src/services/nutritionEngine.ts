@@ -4,8 +4,8 @@
 //  Orchestrates Ollama inference + Prisma persistence
 // ============================================================
 
-import prisma from "../lib/prismaClient.js";
-import { generateDietPlan } from "../lib/ollamaClient.js";
+import prisma from "../lib/prismaClient";
+import { generateDietPlan } from "../lib/ollamaClient";
 import {
   DietPlan,
   GeneratePlanRequest,
@@ -13,7 +13,7 @@ import {
   SavePlanResponse,
   GetPlansResponse,
   ErrorCode,
-} from "../types/index.js";
+} from "../types/index";
 
 // ── Generate a plan via Ollama (no DB save) ───────────────────────────────
 export async function generatePlan(
