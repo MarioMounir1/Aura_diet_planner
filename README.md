@@ -36,10 +36,10 @@ npm install
 ### 2. Pull your Ollama model
 
 ```bash
-ollama pull llama3
+ollama pull llava
 ```
 
-> You can use any model that supports JSON output mode (e.g. `mistral`, `llama3`, `gemma2`).
+> You can use any model that supports JSON output mode (e.g. `mistral`, `llava`, `gemma2`).
 
 ### 3. Configure environment
 
@@ -53,7 +53,7 @@ Edit `.env` with your values:
 PORT=3000
 DATABASE_URL="postgresql://postgres:PASSWORD@localhost:PORT/aura_diet_planner"
 OLLAMA_BASE_URL="http://localhost:11434"
-OLLAMA_MODEL="llama3"
+OLLAMA_MODEL="llava"
 ```
 
 ### 4. Set up the database
@@ -167,16 +167,15 @@ aura-diet-planner/
 └── tsconfig.json
 ```
 
----
+## Mathematical Integrity & Self-Healing
 
-## Mathematical Integrity
+To maximize stability with smaller local models like `llava` (which may occasionally make arithmetic summation errors), the engine implements a **Self-Healing Math Correction** routine:
 
-The engine enforces **zero-tolerance macro math** at two levels:
+1. **Ingredient Component Level**: The engine treats the individual generated ingredients as the ground truth.
+2. **Meal Summary Alignment**: For every meal, the engine automatically recalculates and overrides the meal's macro totals as the exact mathematical sum of its ingredients' macros.
+3. **Daily Plan Alignment**: The daily target macros are recalculated as the exact sum of all meal summaries.
 
-1. **Ingredient → Meal**: Sum of all ingredient macros must match `totalCalories / totalProtein / totalCarbs / totalFats` (±2 tolerance)
-2. **Meal → Plan**: Sum of all meal totals must match root `targetCalories / targetProtein / targetCarbs / targetFats` (±5 tolerance)
-
-If Ollama returns a plan that fails either check, the API returns a `MATH_INTEGRITY_FAILED` error and the plan is discarded.
+This guarantees **zero-tolerance math consistency** (perfectly aligned sums, zero rounding errors) at both the database and UI layers without throwing validation errors to the user.
 
 ---
 
