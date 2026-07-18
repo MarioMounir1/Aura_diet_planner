@@ -1,6 +1,7 @@
 // ============================================================
 //  lib/screens/home_screen.dart
-//  Main navigation shell — bottom tab bar + engine status
+//  Aura Diet Planner — Navigation Shell
+//  Volcanic Cyberpunk shell spec
 // ============================================================
 
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import '../services/api_service.dart';
 import '../theme/app_theme.dart';
 import 'generate_screen.dart';
 import 'saved_plans_screen.dart';
-import 'settings_screen.dart';
+import 'accounts_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,14 +26,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = const [
     GenerateScreen(),
     SavedPlansScreen(),
-    SettingsScreen(),
+    AccountsScreen(),
   ];
 
   @override
   void initState() {
     super.initState();
     _checkEngine();
-    // Re-check every 30 seconds
     Future.doWhile(() async {
       await Future.delayed(const Duration(seconds: 30));
       if (!mounted) return false;
@@ -55,51 +55,43 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Scaffold(
         backgroundColor: AuraColors.bg,
+
         // ── AppBar ────────────────────────────────────────────────
         appBar: AppBar(
           backgroundColor: AuraColors.bg,
-          toolbarHeight: 64,
+          toolbarHeight: 60,
           title: Row(
             children: [
-              // Brand icon
+              // Brand mark
               Container(
-                width: 38,
-                height: 38,
+                width: 32,
+                height: 32,
                 decoration: BoxDecoration(
                   gradient: AuraGradients.brand,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
-                      color: AuraColors.pink.withAlpha(80),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+                      color: AuraColors.orange.withAlpha(100),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
-                child: const Icon(Icons.local_fire_department_rounded,
-                    color: Colors.white, size: 20),
+                child: const Icon(
+                  Icons.local_fire_department_rounded,
+                  color: Colors.black,
+                  size: 18,
+                ),
               ),
-              const SizedBox(width: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ShaderMask(
-                    shaderCallback: (bounds) =>
-                        AuraGradients.brand.createShader(bounds),
-                    child: Text(
-                      'Aura',
-                      style: AuraText.display(
-                              size: 18, weight: FontWeight.w900)
-                          .copyWith(color: Colors.white),
-                    ),
-                  ),
-                  Text(
-                    'Diet Planner',
-                    style: AuraText.label(
-                        size: 9, color: AuraColors.textMuted),
-                  ),
-                ],
+              const SizedBox(width: 10),
+              // App name — tracking 1.5, fw900
+              Text(
+                'AURA DIET PLANNER',
+                style: AuraText.display(size: 13, weight: FontWeight.w900)
+                    .copyWith(
+                  letterSpacing: 1.5,
+                  color: AuraColors.textPrimary,
+                ),
               ),
             ],
           ),
@@ -110,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 margin: const EdgeInsets.only(right: 16),
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   color: AuraColors.surface,
                   borderRadius: BorderRadius.circular(20),
@@ -120,9 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      width: 7,
-                      height: 7,
+                      duration: const Duration(milliseconds: 400),
+                      width: 6,
+                      height: 6,
                       decoration: BoxDecoration(
                         color: _engineOnline
                             ? AuraColors.success
@@ -131,21 +123,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         boxShadow: _engineOnline
                             ? [
                                 BoxShadow(
-                                  color: AuraColors.success.withAlpha(120),
-                                  blurRadius: 6,
+                                  color: AuraColors.success.withAlpha(140),
+                                  blurRadius: 5,
                                 )
                               ]
                             : null,
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 5),
                     Text(
                       _engineOnline ? 'Online' : 'Offline',
                       style: AuraText.mono(
-                          size: 11,
-                          color: _engineOnline
-                              ? AuraColors.success
-                              : AuraColors.error),
+                        size: 10,
+                        color: _engineOnline
+                            ? AuraColors.success
+                            : AuraColors.error,
+                      ),
                     ),
                   ],
                 ),
@@ -175,27 +168,33 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: (i) => setState(() => _currentIndex = i),
             backgroundColor: Colors.transparent,
             elevation: 0,
-            selectedItemColor: AuraColors.pink,
+            selectedItemColor: AuraColors.orange,
             unselectedItemColor: AuraColors.textMuted,
-            selectedLabelStyle:
-                AuraText.label(size: 10, color: AuraColors.pink),
-            unselectedLabelStyle:
-                AuraText.label(size: 10, color: AuraColors.textMuted),
+            selectedLabelStyle: AuraText.label(
+              size: 10,
+              color: AuraColors.orange,
+              letterSpacing: 0.5,
+            ),
+            unselectedLabelStyle: AuraText.label(
+              size: 10,
+              color: AuraColors.textMuted,
+              letterSpacing: 0.5,
+            ),
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.bolt_rounded),
-                activeIcon: Icon(Icons.bolt_rounded),
+                icon: Icon(Icons.bolt),
+                activeIcon: Icon(Icons.bolt),
                 label: 'Generate',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark_border_rounded),
-                activeIcon: Icon(Icons.bookmark_rounded),
+                icon: Icon(Icons.bookmark_border),
+                activeIcon: Icon(Icons.bookmark),
                 label: 'Saved',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings_outlined),
-                activeIcon: Icon(Icons.settings_rounded),
-                label: 'Settings',
+                icon: Icon(Icons.person_outline),
+                activeIcon: Icon(Icons.person),
+                label: 'Account',
               ),
             ],
           ),

@@ -1,98 +1,107 @@
 // ============================================================
 //  lib/theme/app_theme.dart
-//  Aura Diet Planner — Dark premium design system
-//  Volcanic-Nutrition-Engine
+//  Aura Diet Planner — Volcanic Cyberpunk Design System
+//  No external font assets — Material system fonts only
 // ============================================================
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-// ── Brand colors ───────────────────────────────────────────────────
+// ── Brand color tokens ─────────────────────────────────────────────
 class AuraColors {
   AuraColors._();
 
-  static const bg         = Color(0xFF080B12);
-  static const bgCard     = Color(0xFF0D1117);
-  static const surface    = Color(0x0AFFFFFF); // ~4% white
-  static const border     = Color(0x14FFFFFF); // ~8% white
+  // Surfaces
+  static const bg       = Color(0xFF0D1117); // Obsidian Dark
+  static const bgCard   = Color(0xFF161B22); // Deep Carbon
+  static const surface  = Color(0x0AFFFFFF); // 4% white overlay
+  static const border   = Color(0xFF21262D); // Structural border
 
-  // Brand gradient stops
-  static const orange     = Color(0xFFFF6B35);
-  static const pink       = Color(0xFFFF3CAC);
-  static const purple     = Color(0xFF784BA0);
+  // Accents
+  static const orange   = Color(0xFFFF7B00); // Volt Orange (primary)
+  static const amber    = Color(0xFFFF9D42); // Cyber Amber (secondary)
 
   // Macro colors
-  static const calColor   = Color(0xFFFB923C);
-  static const proColor   = Color(0xFF60A5FA);
-  static const carbColor  = Color(0xFF34D399);
-  static const fatColor   = Color(0xFFA78BFA);
+  static const calColor  = Color(0xFFFF7B00); // Volt Orange
+  static const proColor  = Color(0xFF58A6FF); // Electric Blue
+  static const carbColor = Color(0xFF3FB950); // Neon Green
+  static const fatColor  = Color(0xFFA78BFA); // Cyber Violet
 
   // Status
-  static const success    = Color(0xFF10B981);
-  static const error      = Color(0xFFEF4444);
-  static const warning    = Color(0xFFF59E0B);
+  static const success   = Color(0xFF3FB950);
+  static const error     = Color(0xFFF85149);
+  static const warning   = Color(0xFFD29922);
 
   // Text
-  static const textPrimary   = Color(0xFFF0F4FF);
-  static const textSecondary = Color(0xFF8892A4);
-  static const textMuted     = Color(0xFF4B5563);
+  static const textPrimary   = Color(0xFFE6EDF3); // Bright white
+  static const textSecondary = Color(0xFF8B949E); // Slate Muted
+  static const textMuted     = Color(0xFF484F58); // Deep muted
 }
 
-// ── Gradients ──────────────────────────────────────────────────────
+// ── Gradient tokens ────────────────────────────────────────────────
 class AuraGradients {
   AuraGradients._();
 
   static const brand = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [AuraColors.orange, AuraColors.pink, AuraColors.purple],
+    colors: [AuraColors.orange, AuraColors.amber],
   );
 
   static const card = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0x12FF6B35), Color(0x0CFF3CAC)],
+    colors: [Color(0x18FF7B00), Color(0x0CFF9D42)],
   );
 
-  static const proGrad = LinearGradient(
-    colors: [Color(0xFF2563EB), Color(0xFF7C3AED)],
+  static const heroBg = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0x22FF7B00), Color(0xFF0D1117)],
   );
 }
 
-// ── Text styles ────────────────────────────────────────────────────
+// ── Typography helpers — system fonts only ─────────────────────────
 class AuraText {
   AuraText._();
 
-  static TextStyle display({double size = 32, FontWeight weight = FontWeight.w900}) =>
-      GoogleFonts.outfit(
+  static TextStyle display({
+    double size = 32,
+    FontWeight weight = FontWeight.w900,
+    Color? color,
+  }) =>
+      TextStyle(
         fontSize: size,
         fontWeight: weight,
-        color: AuraColors.textPrimary,
-        letterSpacing: -0.03 * size,
+        color: color ?? AuraColors.textPrimary,
+        letterSpacing: -0.5,
         height: 1.1,
+        fontFamily: null, // uses system default (Roboto on Android)
       );
 
-  static TextStyle body({double size = 14, Color? color}) =>
-      GoogleFonts.outfit(
+  static TextStyle body({double size = 14, Color? color}) => TextStyle(
         fontSize: size,
         fontWeight: FontWeight.w400,
         color: color ?? AuraColors.textSecondary,
         height: 1.6,
       );
 
-  static TextStyle label({double size = 12, Color? color}) =>
-      GoogleFonts.outfit(
+  static TextStyle label({
+    double size = 11,
+    Color? color,
+    double letterSpacing = 0.8,
+  }) =>
+      TextStyle(
         fontSize: size,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: color ?? AuraColors.textMuted,
-        letterSpacing: 0.07 * size,
+        letterSpacing: letterSpacing,
       );
 
-  static TextStyle mono({double size = 13, Color? color}) =>
-      GoogleFonts.jetBrainsMono(
+  static TextStyle mono({double size = 13, Color? color}) => TextStyle(
         fontSize: size,
         fontWeight: FontWeight.w500,
         color: color ?? AuraColors.textPrimary,
+        fontFamily: 'monospace',
       );
 }
 
@@ -101,105 +110,113 @@ class AppTheme {
   AppTheme._();
 
   static ThemeData get dark => ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    scaffoldBackgroundColor: AuraColors.bg,
-    colorScheme: ColorScheme.dark(
-      primary: AuraColors.pink,
-      secondary: AuraColors.orange,
-      surface: AuraColors.bgCard,
-      error: AuraColors.error,
-    ),
-    textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme),
-    appBarTheme: AppBarTheme(
-      backgroundColor: AuraColors.bg,
-      elevation: 0,
-      scrolledUnderElevation: 0,
-      centerTitle: false,
-      titleTextStyle: AuraText.display(size: 20, weight: FontWeight.w700),
-      iconTheme: const IconThemeData(color: AuraColors.textPrimary),
-    ),
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: AuraColors.surface,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AuraColors.border),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AuraColors.border),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AuraColors.pink, width: 1.5),
-      ),
-      labelStyle: AuraText.label(),
-      hintStyle: AuraText.body(color: AuraColors.textMuted),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AuraColors.pink,
-        foregroundColor: Colors.white,
-        minimumSize: const Size.fromHeight(52),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        textStyle: AuraText.body(size: 16, color: Colors.white)
-            .copyWith(fontWeight: FontWeight.w700),
-        elevation: 0,
-      ),
-    ),
-    cardTheme: CardThemeData(
-      color: AuraColors.bgCard,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: AuraColors.border),
-      ),
-      margin: EdgeInsets.zero,
-    ),
-    dividerTheme: const DividerThemeData(
-      color: AuraColors.border,
-      thickness: 1,
-      space: 0,
-    ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: AuraColors.bgCard,
-      selectedItemColor: AuraColors.pink,
-      unselectedItemColor: AuraColors.textMuted,
-      elevation: 0,
-      type: BottomNavigationBarType.fixed,
-    ),
-    snackBarTheme: SnackBarThemeData(
-      backgroundColor: AuraColors.bgCard,
-      contentTextStyle: AuraText.body(color: AuraColors.textPrimary),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      behavior: SnackBarBehavior.floating,
-    ),
-  );
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: AuraColors.bg,
+        colorScheme: const ColorScheme.dark(
+          primary: AuraColors.orange,
+          secondary: AuraColors.amber,
+          surface: AuraColors.bgCard,
+          error: AuraColors.error,
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: AuraColors.bg,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          centerTitle: false,
+          titleTextStyle: AuraText.display(size: 14, weight: FontWeight.w900)
+              .copyWith(
+            letterSpacing: 1.5,
+            color: AuraColors.textPrimary,
+          ),
+          iconTheme: const IconThemeData(color: AuraColors.textPrimary),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: AuraColors.bgCard,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: AuraColors.border),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: AuraColors.border),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide:
+                const BorderSide(color: AuraColors.orange, width: 1.5),
+          ),
+          labelStyle: AuraText.label(color: AuraColors.textSecondary),
+          hintStyle: AuraText.body(color: AuraColors.textMuted),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AuraColors.orange,
+            foregroundColor: Colors.black,
+            minimumSize: const Size.fromHeight(52),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)),
+            textStyle: AuraText.body(size: 15, color: Colors.black)
+                .copyWith(fontWeight: FontWeight.w800),
+            elevation: 0,
+          ),
+        ),
+        cardTheme: CardThemeData(
+          color: AuraColors.bgCard,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: AuraColors.border),
+          ),
+          margin: EdgeInsets.zero,
+        ),
+        dividerTheme: const DividerThemeData(
+          color: AuraColors.border,
+          thickness: 1,
+          space: 0,
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: AuraColors.bgCard,
+          selectedItemColor: AuraColors.orange,
+          unselectedItemColor: AuraColors.textMuted,
+          elevation: 0,
+          type: BottomNavigationBarType.fixed,
+        ),
+        snackBarTheme: SnackBarThemeData(
+          backgroundColor: AuraColors.bgCard,
+          contentTextStyle: AuraText.body(color: AuraColors.textPrimary),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
 }
 
-// ── Reusable decoration helpers ────────────────────────────────────
+// ── Decoration helpers ─────────────────────────────────────────────
 BoxDecoration glassCard({
-  double radius = 16,
+  double radius = 12,
   Gradient? gradient,
   Color? borderColor,
+  Color? color,
 }) =>
     BoxDecoration(
-      color: AuraColors.surface,
+      color: color ?? AuraColors.bgCard,
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(color: borderColor ?? AuraColors.border),
       gradient: gradient,
     );
 
-BoxDecoration gradientBrand({double radius = 12}) => BoxDecoration(
+BoxDecoration voltButton({double radius = 10}) => BoxDecoration(
       gradient: AuraGradients.brand,
       borderRadius: BorderRadius.circular(radius),
       boxShadow: [
         BoxShadow(
-          color: AuraColors.pink.withAlpha(70),
-          blurRadius: 20,
-          offset: const Offset(0, 6),
+          color: AuraColors.orange.withAlpha(80),
+          blurRadius: 16,
+          offset: const Offset(0, 4),
         ),
       ],
     );
