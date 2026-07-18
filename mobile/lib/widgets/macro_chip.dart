@@ -10,7 +10,7 @@ enum MacroType { calories, protein, carbs, fats }
 
 extension _MacroStyle on MacroType {
   Color get color => switch (this) {
-        MacroType.calories => AuraColors.calColor,
+        MacroType.calories => const Color(0xFFFF7B00),
         MacroType.protein  => AuraColors.proColor,
         MacroType.carbs    => AuraColors.carbColor,
         MacroType.fats     => AuraColors.fatColor,
