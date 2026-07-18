@@ -7,6 +7,7 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import planRouter from "./routes/plan";
+import dietPlannerRouter from "./routes/dietPlanner";
 import { ErrorResponse } from "./types/index";
 
 
@@ -27,6 +28,7 @@ export function createApp(): Application {
 
   // ── API routes ──────────────────────────────────────────────────────
   app.use("/api/plans", planRouter);
+  app.use("/api/diet-planner", dietPlannerRouter);
 
   // ── Health check ────────────────────────────────────────────────────
   app.get("/api/health", (_req: Request, res: Response) => {
