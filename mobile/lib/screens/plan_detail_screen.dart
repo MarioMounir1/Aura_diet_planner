@@ -63,7 +63,7 @@ class PlanDetailScreen extends StatelessWidget {
                     end: Alignment.bottomRight,
                     colors: [
                       AuraColors.orange.withAlpha(30),
-                      AuraColors.pink.withAlpha(20),
+                      AuraColors.orange.withAlpha(20),
                       AuraColors.bg,
                     ],
                   ),

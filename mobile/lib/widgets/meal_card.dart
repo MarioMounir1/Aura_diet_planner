@@ -100,7 +100,7 @@ class _MealCardState extends State<MealCard>
                     padding: const EdgeInsets.only(left: 10),
                     decoration: const BoxDecoration(
                       border: Border(
-                        left: BorderSide(color: AuraColors.pink, width: 2),
+                        left: BorderSide(color: AuraColors.orange, width: 2),
                       ),
                     ),
                     child: Text(
@@ -156,13 +156,13 @@ class _OrderBadge extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
         decoration: BoxDecoration(
-          color: AuraColors.pink.withAlpha(25),
+          color: AuraColors.orange.withAlpha(25),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AuraColors.pink.withAlpha(60)),
+          border: Border.all(color: AuraColors.orange.withAlpha(60)),
         ),
         child: Text(
           'MEAL $order',
-          style: AuraText.mono(size: 10, color: AuraColors.pink)
+          style: AuraText.mono(size: 10, color: AuraColors.orange)
               .copyWith(fontWeight: FontWeight.w700),
         ),
       );

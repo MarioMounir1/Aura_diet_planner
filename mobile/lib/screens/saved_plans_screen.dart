@@ -54,7 +54,7 @@ class _SavedPlansScreenState extends State<SavedPlansScreen> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _loadPlans,
-      color: AuraColors.pink,
+      color: AuraColors.orange,
       backgroundColor: AuraColors.bgCard,
       child: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -107,7 +107,7 @@ class _SavedPlansScreenState extends State<SavedPlansScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircularProgressIndicator(
-                      color: AuraColors.pink,
+                      color: AuraColors.orange,
                       strokeWidth: 2.5,
                     ),
                     SizedBox(height: 16),
